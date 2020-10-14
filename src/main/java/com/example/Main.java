@@ -25,6 +25,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import static javax.measure.unit.SI.KILOGRAM;
+import javax.measure.quantity.Mass;
+import org.jscience.physics.model.RelativisticModel;
+import org.jscience.physics.amount.Amount;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -37,6 +41,13 @@ import java.util.Map;
 @Controller
 @SpringBootApplication
 public class Main {
+  @RequestMapping("/hello")
+  String hello(Map<String, Object> model) {
+    RelativisticModel.select();
+    Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
+    model.put("science", "E=mc^2: 12 GeV = " + m.toString());
+    return "hello";
+  }
 
   @Value("${spring.datasource.url}")
   private String dbUrl;
